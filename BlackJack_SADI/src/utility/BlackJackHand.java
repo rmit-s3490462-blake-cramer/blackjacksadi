@@ -34,7 +34,7 @@ public class BlackJackHand
 	}
 	
 	//calculate the values of blackjack
-	private int calculateValue()
+	public int calculateValue()
 	{
 		int total = 0;
 		
@@ -46,9 +46,22 @@ public class BlackJackHand
 			
 			if (current.getValue() == BlackJackCard.ACE)
 			{
-				if (this.cardsTotal <= 2)
+				//If total number of cards is 2, then Ace = 11
+				if (isOnlyTwoCards())
 					value = 11;
 				
+				//If total number of cards is 3, then Ace is 11 or 1
+				else if (cardsTotal == 3)
+				{
+					if ((total+11)> 21 ) 
+					{
+						value = 1;
+					}
+					else
+						value = 11;
+				}
+				
+				//If total number of cards is 4 and above, Ace is 1
 				else 
 					value = 1;
 			}
