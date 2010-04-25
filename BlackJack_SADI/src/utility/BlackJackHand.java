@@ -34,7 +34,7 @@ public class BlackJackHand
 	}
 	
 	//calculate the values of blackjack
-	public int calculateValue()
+	private int calculateValue()
 	{
 		int total = 0;
 		
@@ -77,12 +77,12 @@ public class BlackJackHand
 	//blackjack is an ACE with any face card or 10
 	public boolean isBlackJack()
 	{
-		BlackJackCard firstCard, secondCard;
-		firstCard = hand.elementAt(0);
-		secondCard = hand.elementAt(1);
-		
 		if (isOnlyTwoCards())
 		{
+			BlackJackCard firstCard, secondCard;
+			firstCard = hand.elementAt(0);
+			secondCard = hand.elementAt(1);
+			
 			if((firstCard.getValue() == BlackJackCard.ACE || firstCard.getValue() == 10) &&(secondCard.getValue() == BlackJackCard.ACE || secondCard.getValue() == 10) )
 				return true;
 			else 
@@ -95,12 +95,12 @@ public class BlackJackHand
 	//check if the cards on hand are two Ace
 	public boolean isTwoAce()
 	{
-		BlackJackCard firstCard, secondCard;
-		firstCard = hand.elementAt(0);
-		secondCard = hand.elementAt(1);
-		
 		if (isOnlyTwoCards())
 		{
+			BlackJackCard firstCard, secondCard;
+			firstCard = hand.elementAt(0);
+			secondCard = hand.elementAt(1);
+			
 			if(firstCard.getValue() == BlackJackCard.ACE  && secondCard.getValue() == BlackJackCard.ACE )
 				return true;
 			else 
@@ -110,5 +110,49 @@ public class BlackJackHand
 			return false;
 	}
 	
+	//check if the cards in hand is over 17
+	public boolean isOver17()
+	{
+		if (calculateValue() >= 17 )
+			return true;
+		else
+			return false;
+	}
+	
+	//check if the value in hand is less than 21
+	public boolean isUnder21()
+	{
+		if (calculateValue() <= 21 )
+			return true;
+		else
+			return false;
+	}
+	
+	//check if the value in hand is already burst (more than 21)
+	public boolean isBurst()
+	{
+		if (calculateValue() > 21)
+			return true;
+		else
+			return false;
+	}
+	
+	//check if the value in hand is a pair
+	public boolean isPair()
+	{
+		if (isOnlyTwoCards())
+		{
+			BlackJackCard firstCard, secondCard;
+			firstCard = hand.elementAt(0);
+			secondCard = hand.elementAt(1);
+			
+			if (firstCard.getValue() == secondCard.getValue())
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
 	
 }
