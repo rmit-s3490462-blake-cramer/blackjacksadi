@@ -123,6 +123,21 @@ public class BlackJackHand
 			return false;
 	}
 	
+	//return true if the cards in hand is equal to 21
+	public boolean is21()
+	{
+		if(!isOnlyTwoCards())
+		{
+			if(calculateValue() == 21)
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	
+	}
+	
 	//check if the cards in hand is over 17
 	public boolean isOver17()
 	{

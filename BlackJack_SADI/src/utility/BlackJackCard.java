@@ -56,7 +56,13 @@ public class BlackJackCard
 	//get the value of the card
 	public int getValue()
 	{
-		return value;
+		if (value == JACK || value == QUEEN || value == KING)
+		{
+			return 10;
+		}
+		
+		else 
+			return value;
 	}
 	
 	//get the suit of the card
