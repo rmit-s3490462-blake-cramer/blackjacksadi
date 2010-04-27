@@ -3,8 +3,6 @@
 
 = Point counting rules for blackjack for this assignment =
 
-
-Add your content here.  Format your content with:
   * K, Q, J = 10
   * Numeric cards = respective face value
   * If total number of cards is 2, then Ace = 11
