@@ -1,5 +1,5 @@
-//Packed in client.gui
-package client.gui;
+
+package guiComponent;
 
 //Imports
 import java.awt.*;
