@@ -4,7 +4,7 @@
 = Class Diagram v2 =
 Added 28th April 2010
 
-<a href="http://blackjacksadi.googlecode.com/files/classdiagram_v2.jpg"><img src="http://blackjacksadi.googlecode.com/files/class_diagram_v1.jpg" alt="class diagram v1" height="1000"/></a>
+<a href="http://blackjacksadi.googlecode.com/files/classdiagram_v2.jpg"><img src="http://blackjacksadi.googlecode.com/files/class_diagram_v2.jpg" alt="class diagram v2" height="1000"/></a>
 
 
 
