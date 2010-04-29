@@ -4,7 +4,7 @@
 = Class Diagram v3 =
 Added 29th April 2010 (only minor changes on association and add in Constants for GameStatus)
 
-<a href="http://blackjacksadi.googlecode.com/files/classdiagram_v3.jpg"><img src="http://blackjacksadi.googlecode.com/files/classdiagram_v3.jpg" alt="class diagram v3" height="1000"/></a>
+<a href="http://blackjacksadi.googlecode.com/files/classDiagram_v3.jpg"><img src="http://blackjacksadi.googlecode.com/files/classDiagram_v3.jpg" alt="class diagram v3" height="1000"/></a>
 
 = Class Diagram v2 =
 Added 28th April 2010
