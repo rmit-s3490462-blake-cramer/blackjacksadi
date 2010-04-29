@@ -3,13 +3,13 @@ package client;
 import server.*;
 import utility.*;
 
-public class player extends BlackJackHand
+public class Player extends BlackJackHand
 {
 	private String username;
 	private int playerTurn;
 	private boolean isMyTurn;
 	
-	public player(String username, int playerTurn) 
+	public Player(String username, int playerTurn) 
 	{
 		this.username = username;
 		this.playerTurn = playerTurn;
