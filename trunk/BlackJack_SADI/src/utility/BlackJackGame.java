@@ -13,19 +13,21 @@ public class BlackJackGame
 	 */
 	public BlackJackGame() 
 	{
-		deck = new BlackJackDeck();
+		
 		
 
 	}
 	
 	public void newGame()
 	{
-		
+		deck = new BlackJackDeck();
+		deck.shuffle();
 	}
 	
 	public void restartGame()
 	{
-		
+		deck = new BlackJackDeck();
+		deck.shuffle();
 	}
 	
 	public void results()
