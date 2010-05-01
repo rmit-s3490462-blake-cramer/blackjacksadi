@@ -18,5 +18,8 @@ public interface GameStatus
 	public static int PLAYER6_WON = 61; // Indicate player 6 won
 	public static int DRAW        = -1; // Indicate a draw
 	public static int CONTINUE    = 100; // Indicate to continue
+	
+	public static final int MAXPLAYERS = 6;
+	public static final int MAXTRIALS = 5;
 
 }
