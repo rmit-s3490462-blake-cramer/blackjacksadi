@@ -2,7 +2,7 @@ package utility;
 
 import utility.*;
 
-public class Player extends BlackJackHand
+public class Player
 {
 	private String username;
 	private int playerTurn;
