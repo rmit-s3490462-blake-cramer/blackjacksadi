@@ -1,18 +1,29 @@
 package utility;
 
 import utility.*;
+import java.net.*;
 
-public class Player
+public class Player implements GameStatus
 {
 	private String username;
 	private int playerTurn;
 	private boolean isMyTurn;
+	private Socket socket;
 	private BlackJackHand hand;
 	
-	public Player(String username, int playerTurn) 
+	public Player(String username, int playerTurn, Socket socket) //a normal player that needs a username
 	{
 		this.username = username;
 		this.playerTurn = playerTurn;
+		this.socket = socket;
+		isMyTurn = false;
+		hand = new BlackJackHand();
+	}
+	
+	public Player(Socket socket) //a default player - dealer
+	{
+		this.playerTurn = GameStatus.DEALER;
+		this.socket = socket;
 		isMyTurn = false;
 		hand = new BlackJackHand();
 	}
