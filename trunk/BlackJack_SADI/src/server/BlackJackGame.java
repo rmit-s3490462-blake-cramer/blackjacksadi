@@ -7,34 +7,147 @@ import utility.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.net.*;
 
 public class BlackJackGame extends JFrame implements GameStatus
 {
 	private BlackJackDeck deck;
 	private Dealer dealer;
 	private Vector <Player> players;
-	private int playersCount, whoseTurn, rounds, sessionNo;
+	private Vector <Player> waitingPool;
+	private ScoreBoard scoreBoard;
+	private int playersCount, whoseTurn, trials, sessionNo;
+	private static final int MAXPLAYER = 6;
+	private static final int MAXTRIALS = 5;
 	private boolean isContinue;
-	private ScoreBoard scores;
-	private int port = 8000;
 	
+	
+	//To display out the messages
 	private JTextArea jtaLog;
 	/**
 	 * @param args
 	 */
+
+	//Constructor of a new BlackJackGame
 	public BlackJackGame() 
 	{
 		playersCount = 0;
+		trials = 1;
+		sessionNo = 1;
 		setupFrame();
 		newGame();
 	}
 	
-	/********Private methods************/
+	
+	/***************************************************
+	 * PUBLIC METHODS
+	****************************************************/
+	//new game means another new 5 trials
+	//initialise the deck, dealer and also players
+	public void newGame()
+	{
+		deck = new BlackJackDeck();
+		dealer = new Dealer();
+		players = new Vector<Player>();
+		HandleSession handler = new HandleSession(this);
+		
+		deck.shuffle();
+	}
+	
+	//restart the game with another trial and less than 5
+	public void restartGame()
+	{
+		//initialise the deck and clear off the players and dealer
+		//then newGame()
+		//then add players from the waiting pool
+	}
+	
+	public void results()
+	{
+		
+	}
+	
+	/***************************************************
+	 * MODIFIER
+	****************************************************/
+	public boolean addPlayer(Player player)
+	{
+		if(players.add(player))
+			return true;
+		return false;
+	}
+	
+	public boolean addWaitingPlayers(Player player)
+	{
+		if(waitingPool.add(player))
+			return true;
+		return false;
+	}
+	
+	public int nextPlayer()
+	{
+		if(whoseTurn <= playersCount)
+			whoseTurn ++;
+		else
+			whoseTurn = 0;
+		return whoseTurn;
+	}
+	
+	public int addTrial()
+	{
+		if(trials <= MAXTRIALS)
+			trials ++;
+		else
+			trials = 1;
+		return trials;
+	}
+	
+	public int addSession()
+	{
+		return sessionNo++;
+	}
+	
+	/***************************************************
+	 * ACCESSORS
+	****************************************************/
+	public Vector<Player> getPlayers()
+	{
+		return players;
+	}
+	
+	public Vector<Player> getWaitingPlayers()
+	{
+		return waitingPool;
+	}
+	
+	public ScoreBoard getScoreBoard()
+	{
+		return scoreBoard;
+	}
+	
+	public int getWhoseTurn()
+	{
+		return whoseTurn;
+	}
+	
+	public int getTrial()
+	{
+		return trials;
+	}
+	
+	public int getSession()
+	{
+		return sessionNo;
+	}
+	
+	
+	/***************************************************
+	 * PRIVATE METHODS
+	****************************************************/
 	//setup the frame for the server UI
 	private void setupFrame()
 	{
 		jtaLog = new JTextArea();
+		jtaLog.setEditable(false);
 		
 		//Create a scroll pane to hold text area
 		JScrollPane scrollPane = new JScrollPane(jtaLog);
@@ -43,76 +156,21 @@ public class BlackJackGame extends JFrame implements GameStatus
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(300,300);
+		setSize(600,400);
 		setTitle("BlackJack Game - SADI");
 		setVisible(true);
 	}
 	
-	private void append(String msg)
+	/***************************************************
+	 * DEFAULT METHODS
+	****************************************************/
+	void append(String msg)
 	{
 		jtaLog.append(msg);
 	}
 	
-	class HandleSession extends Thread implements GameStatus
-	{
-		public HandleSession()
-		{
-			try
-			{
-				//Create a server socket
-				ServerSocket serverSocket = new ServerSocket(port);
-				append(new Date() + ": Server statred at socket" + port + "\n" );
-				
-				//Number a session
-				sessionNo = 1;
-				
-				//Ready to create a session for every players
-				while(true)
-				{
-					append(new Date() + ": Wait for players to join session " + sessionNo + "\n");
-					
-					//Connect to player 1
-					
-					
-					//get player's username and store inside player's vector.
-					
-				}
-			}
-			catch(IOException ex)
-			{
-				System.err.println(ex);
-			}
-		}
-	}
-	
-	//new game means another new 5 trials
-	public void newGame()
-	{
-		dealer = new Dealer();
-		players = new Vector<Player>();	
-		deck = new BlackJackDeck();
-		
-		
-		
-		
-		deck.shuffle();
-	}
-	
-	//restart the game with another trial and less than 5
-	public void restartGame()
-	{
-		deck = new BlackJackDeck();
-		deck.shuffle();
-	}
-	
-	public void results()
-	{
-		
-	}
 	public static void main (String args[])
 	{
 		BlackJackGame server = new BlackJackGame();
 	}
-
-
 }
