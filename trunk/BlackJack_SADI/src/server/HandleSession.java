@@ -5,11 +5,19 @@ import java.net.*;
 import java.util.*;
 import utility.*;
 
+/**
+ * 
+ * @author Suzann
+ * This class is to handle the connections between client and server
+ */
+
 class HandleSession extends Thread implements GameStatus
 {
-	private int port = 8000, sessionNo;
+	private int sessionNo;
+	private Socket playerSocket;
 	private DataInputStream fromPlayer;
 	private DataOutputStream toPlayer;
+	
 	
 	public HandleSession(BlackJackGame game)
 	{
@@ -17,18 +25,16 @@ class HandleSession extends Thread implements GameStatus
 		try
 		{
 			//Create a server socket
-			ServerSocket serverSocket = new ServerSocket(port);
+			ServerSocket serverSocket = new ServerSocket(GameStatus.SERVERSOCKET);
 			
-			//Append a msg to the JTextArea
-			game.append(new Date() + ": Server statred at socket " + port + "\n" );
+			
 			
 			//Ready to create a session for every players
 			while(true)
 			{
-				game.append(new Date() + ": Wait for players to join session " + sessionNo + "\n");
+				//game.append(new Date() + ": Wait for players to join session " + sessionNo + "\n");
 				
-				//Accept to player and add to waitingpool
-				
+				//Accept to player and add to waitingpool			
 				
 				//get player's username and store inside player's vector.
 				
@@ -39,4 +45,6 @@ class HandleSession extends Thread implements GameStatus
 			System.err.println(ex);
 		}
 	}
+	
+	
 }
