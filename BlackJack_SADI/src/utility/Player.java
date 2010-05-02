@@ -11,19 +11,17 @@ public class Player implements GameStatus
 	private Socket socket;
 	private BlackJackHand hand;
 	
-	public Player(String username, int playerTurn, Socket socket) //a normal player that needs a username
+	public Player(String username, Socket socket) //a normal player that needs a username
 	{
 		this.username = username;
-		this.playerTurn = playerTurn;
 		this.socket = socket;
 		isMyTurn = false;
 		hand = new BlackJackHand();
 	}
 	
-	public Player(Socket socket) //a default player - dealer
+	public Player() //a default player - dealer
 	{
 		this.playerTurn = GameStatus.DEALER;
-		this.socket = socket;
 		isMyTurn = false;
 		hand = new BlackJackHand();
 	}
@@ -53,6 +51,41 @@ public class Player implements GameStatus
 	public void split()
 	{
 
+	}
+	/***************************************************
+	 * MODIFIER
+	****************************************************/
+	public void setPlayerTurn(int turn)
+	{
+		playerTurn = turn;
+	}
+	
+	/***************************************************
+	 * ACCESSORS
+	****************************************************/
+	public Socket getSocket()
+	{
+		return socket;
+	}
+	
+	public String getUsername()
+	{
+		return username;
+	}
+	
+	public int getPlayerTurn()
+	{
+		return playerTurn;
+	}
+	
+	public boolean isMyTurn()
+	{
+		return isMyTurn;
+	}
+	
+	public BlackJackHand getHand()
+	{
+		return hand;
 	}
 
 }

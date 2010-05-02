@@ -1,4 +1,8 @@
 package utility;
+import java.util.Vector;
+
+import server.*;
+import client.*;
 
 public class TestClass {
 
@@ -36,6 +40,15 @@ public class TestClass {
 		System.out.println("The value of cards in hand = " + hand.calculateValue());
 		
 		System.out.println("Is burst? = " + hand.isBurst());
+		
+		BlackJackGame game = new BlackJackGame();
+		Player player = new Player();
+		Vector <Player> v = new Vector<Player>();
+		v.add(player);
+		
+		
+		System.out.println(v.elementAt(0).toString());
+		
 	}
 
 }

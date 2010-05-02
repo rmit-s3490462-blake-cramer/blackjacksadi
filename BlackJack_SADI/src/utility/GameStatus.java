@@ -21,5 +21,7 @@ public interface GameStatus
 	
 	public static final int MAXPLAYERS = 6;
 	public static final int MAXTRIALS = 5;
+	
+	public static final int SERVERSOCKET = 8000;
 
 }

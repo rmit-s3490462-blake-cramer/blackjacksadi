@@ -7,17 +7,17 @@ import utility.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.net.*;
 
 public class BlackJackGame extends JFrame implements GameStatus
 {
 	private BlackJackDeck deck;
-	private Dealer dealer;
+	private Player dealer;
 	private Vector <Player> players;
 	private Vector <Player> waitingPool;
 	private ScoreBoard scoreBoard;
 	private int playersCount, whoseTurn, trials, sessionNo;
-	private static final int MAXPLAYER = 6;
-	private static final int MAXTRIALS = 5;
+
 	private boolean isContinue;
 	
 	
@@ -33,6 +33,9 @@ public class BlackJackGame extends JFrame implements GameStatus
 		playersCount = 0;
 		trials = 1;
 		sessionNo = 1;
+		dealer = new Player();
+		players = new Vector<Player>();
+		waitingPool = new Vector<Player>();
 		setupFrame();
 		newGame();
 	}
@@ -46,9 +49,8 @@ public class BlackJackGame extends JFrame implements GameStatus
 	public void newGame()
 	{
 		deck = new BlackJackDeck();
-		dealer = new Dealer();
 		players = new Vector<Player>();
-		HandleSession handler = new HandleSession(this);
+		HandleConnection connectionHandler = new HandleConnection(this);
 		
 		deck.shuffle();
 	}
