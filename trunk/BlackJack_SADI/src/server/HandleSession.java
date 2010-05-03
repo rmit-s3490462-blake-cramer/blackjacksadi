@@ -8,42 +8,31 @@ import utility.*;
 /**
  * 
  * @author Suzann
- * This class is to handle the connections between client and server
+ * This class is to handle the game sessions between client and server
  */
 
 class HandleSession extends Thread implements GameStatus
 {
 	private int sessionNo;
-	private Socket playerSocket;
+	private Socket playerSocket[];
 	private DataInputStream fromPlayer;
 	private DataOutputStream toPlayer;
-	
+	private BlackJackGame game;
 	
 	public HandleSession(BlackJackGame game)
 	{
-		sessionNo = 1;
-		try
+		/*Vector <Player> players = game.getPlayers();
+		for (int i=0; i<players.size(); i++)
 		{
-			//Create a server socket
-			ServerSocket serverSocket = new ServerSocket(GameStatus.SERVERSOCKET);
-			
-			
-			
-			//Ready to create a session for every players
-			while(true)
-			{
-				//game.append(new Date() + ": Wait for players to join session " + sessionNo + "\n");
-				
-				//Accept to player and add to waitingpool			
-				
-				//get player's username and store inside player's vector.
-				
-			}
+			playerSocket[i] = players.elementAt(i).getSocket();
 		}
-		catch(IOException ex)
-		{
-			System.err.println(ex);
-		}
+		sessionNo = 1;*/
+		
+	}
+	
+	public void run()
+	{
+		
 	}
 	
 	
