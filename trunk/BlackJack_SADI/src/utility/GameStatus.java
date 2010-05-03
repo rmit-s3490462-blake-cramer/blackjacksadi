@@ -11,11 +11,11 @@ public interface GameStatus
 	public static int PLAYER6     = 6; // Indicate player 6 turn
 	public static int DEALER_WON  = 10; // Indicate dealer won
 	public static int PLAYER1_WON = 11; // Indicate player 1 won
-	public static int PLAYER2_WON = 21; // Indicate player 2 won
-	public static int PLAYER3_WON = 31; // Indicate player 3 won
-	public static int PLAYER4_WON = 41; // Indicate player 4 won
-	public static int PLAYER5_WON = 51; // Indicate player 5 won
-	public static int PLAYER6_WON = 61; // Indicate player 6 won
+	public static int PLAYER2_WON = 12; // Indicate player 2 won
+	public static int PLAYER3_WON = 13; // Indicate player 3 won
+	public static int PLAYER4_WON = 14; // Indicate player 4 won
+	public static int PLAYER5_WON = 15; // Indicate player 5 won
+	public static int PLAYER6_WON = 16; // Indicate player 6 won
 	public static int DRAW        = -1; // Indicate a draw
 	public static int CONTINUE    = 100; // Indicate to continue
 	
@@ -23,5 +23,10 @@ public interface GameStatus
 	public static final int MAXTRIALS = 5;
 	
 	public static final int SERVERSOCKET = 8000;
+	
+	public static final int DEAL  = 20;
+	public static final int HIT   = 21;
+	public static final int STAND = 22;
+	public static final int SPLIT = 23;
 
 }
