@@ -6,81 +6,81 @@ import java.util.*;
 
 import utility.*;
 
-public class HandleConnection extends Thread implements GameStatus
+class HandleConnection extends Thread implements GameStatus
 {
+	private DataOutputStream out = null;
+	private DataInputStream in = null;
+	private String inputLine = null, outputLine = null;
+	BlackJackGame game = null;
+	
 	public HandleConnection (BlackJackGame game)
+	{
+		this.game = game;
+		
+	}
+	
+	public void connect(ServerSocket serverSocket)
 	{
 		try
 		{
-			//Create a server socket
-			ServerSocket serverSocket = new ServerSocket(GameStatus.SERVERSOCKET);
-			
-			//Append a msg to the JTextArea
-			game.append(new Date() + ": Server waiting for players to connect...\n" );
-			
 			//accept the players that are trying to connect to the server
 			//and add them to the waitingPool in game
-			while(true)
+			
+			if (game.getPlayersCount() < GameStatus.MAXPLAYERS )
 			{
 				Socket playerSocket = serverSocket.accept();
+				out = new DataOutputStream(playerSocket.getOutputStream());//send to client
+				in = new DataInputStream(playerSocket.getInputStream());//receive from client
+				
 				game.append("Accepted a client...\n" );
-				
-				PrintWriter out = new PrintWriter (playerSocket.getOutputStream(), true);
-				BufferedReader in = new BufferedReader (new InputStreamReader (playerSocket.getInputStream()));
-				String inputLine, outputLine;
-				
-				outputLine = "You are connected to server. Please input your username.";
-				game.append("Client connected. Awaiting username...\n");
-				out.println(outputLine);
+				game.append("Client connected. Awaiting username...\n");				
+				//outputLine = "You are connected to server. Please input your username.\n";
+				//out.writeUTF("You are connected to server. Please input your username.\n");//acknowledge user to input username
+				//out.flush();
 				
 				
-				if ((inputLine = in.readLine())!= null)
+				if ((inputLine = in.readUTF())!= null)
 				{
-					String username = inputLine;//get the username as 
+					String username = inputLine;//get the username as string
 					
 					game.append("Client has input username: "  + username + "\n");
-					outputLine = "You have entered username: " + username;					
-					out.println(outputLine);//send the msg to client side
+					//outputLine = "You have entered username: " + username + "\n";					
+					//out.writeUTF(outputLine);//send the msg to client side
+					//out.flush();
 					
 					Player player = new Player(username,playerSocket);
+					
 					if (game.addWaitingPlayers(player))
 					{	
-						//game.append(game.getPlayers().elementAt(0).toString());
-						outputLine="You are added into waiting list.\n Please wait for the other players";
+						outputLine="You have entered username: " + username + "\n" + "You are added into waiting list.\n Please wait for the other players to get connected...\n";
+						out.writeUTF(outputLine);//send the msg to client side
+						out.flush();
+						game.addPlayersCount();
 					}
 					else
 					{	
-						outputLine="You are not added into the game. Please try again.";
+						outputLine="You are not added into the game. Please try again.\n";
+						out.writeUTF(outputLine);
 					}
-					out.println(outputLine);
 				}
 				else
-					break;
-				
-				
-				/*out.close();
-				in.close();
-				playerSocket.close();
-				serverSocket.close();*/
-				
-				/*String username = playerSocket.getInputStream().toString();
-				Player player = new Player(username, playerSocket);
-				game.addWaitingPlayers(player);*/
-				
+				{
+					out.writeUTF("You are required to input a username\n");
+				}
 			}
+			else
+			{
+				Socket playerSocket = serverSocket.accept();
+				out = new DataOutputStream(playerSocket.getOutputStream());//send to client
+				out.writeUTF("Room is full. Please try again later.\n");
+			}
+				
 		}
 		catch(IOException ex)
 		{
 			System.err.println(ex);
 			game.append(ex.toString());
 		}
-	}
-	
-	public void run()
-	{
-		
 		
 	}
-	
-	
 }

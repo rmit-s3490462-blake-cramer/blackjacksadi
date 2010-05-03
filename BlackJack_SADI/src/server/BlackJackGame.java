@@ -1,22 +1,24 @@
 package server;
 
 import java.util.*;
+
 import client.*;
 import server.*;
 import utility.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.*;
 
-public class BlackJackGame extends JFrame implements GameStatus
+public class BlackJackGame extends JFrame implements Runnable, GameStatus
 {
 	private BlackJackDeck deck;
 	private Player dealer;
 	private Vector <Player> players;
 	private Vector <Player> waitingPool;
 	private ScoreBoard scoreBoard;
-	private int playersCount, whoseTurn, trials, sessionNo;
+	private int playersCount, whoseTurn, trials;
 
 	private boolean isContinue;
 	
@@ -32,12 +34,11 @@ public class BlackJackGame extends JFrame implements GameStatus
 	{
 		playersCount = 0;
 		trials = 1;
-		sessionNo = 1;
 		dealer = new Player();
 		players = new Vector<Player>();
 		waitingPool = new Vector<Player>();
 		setupFrame();
-		newGame();
+		createConnections();
 	}
 	
 	
@@ -50,8 +51,6 @@ public class BlackJackGame extends JFrame implements GameStatus
 	{
 		deck = new BlackJackDeck();
 		players = new Vector<Player>();
-		HandleConnection connectionHandler = new HandleConnection(this);
-		
 		deck.shuffle();
 	}
 	
@@ -61,10 +60,20 @@ public class BlackJackGame extends JFrame implements GameStatus
 		//initialise the deck and clear off the players and dealer
 		//then newGame()
 		//then add players from the waiting pool
+		deck = new BlackJackDeck();
+		deck.shuffle();
+		
 	}
 	
 	public void results()
 	{
+		
+	}
+	
+	@Override
+	public void run() 
+	{
+		// TODO Auto-generated method stub
 		
 	}
 	
@@ -103,10 +112,16 @@ public class BlackJackGame extends JFrame implements GameStatus
 		return trials;
 	}
 	
-	public int addSession()
+	public void addPlayersCount()
 	{
-		return sessionNo++;
+		playersCount++;
 	}
+	
+	public void minusPlayersCount()
+	{
+		playersCount--;
+	}
+	
 	
 	/***************************************************
 	 * ACCESSORS
@@ -136,15 +151,42 @@ public class BlackJackGame extends JFrame implements GameStatus
 		return trials;
 	}
 	
-	public int getSession()
+	public int getPlayersCount()
 	{
-		return sessionNo;
+		return playersCount;
 	}
-	
 	
 	/***************************************************
 	 * PRIVATE METHODS
 	****************************************************/
+	//create connection
+	private void createConnections()
+	{
+		try
+		{
+			//Create a server socket
+			ServerSocket serverSocket = new ServerSocket(GameStatus.SERVERSOCKET);
+			
+			
+			//Append a msg to the JTextArea
+			append(new Date() + ": Server waiting for players to connect...\n" );
+			
+			HandleConnection connectionHandler = new HandleConnection(this);
+			
+			while(true)
+			{
+				connectionHandler.connect(serverSocket);
+				//Create a session thread to handle each player
+				HandleSession thread = new HandleSession(this);
+				thread.start();
+			}
+		}
+		catch (IOException e)
+		{
+			append(e.toString());
+		}
+	}
+	
 	//setup the frame for the server UI
 	private void setupFrame()
 	{
@@ -163,6 +205,8 @@ public class BlackJackGame extends JFrame implements GameStatus
 		setVisible(true);
 	}
 	
+	
+	
 	/***************************************************
 	 * DEFAULT METHODS
 	****************************************************/
@@ -174,5 +218,10 @@ public class BlackJackGame extends JFrame implements GameStatus
 	public static void main (String args[])
 	{
 		BlackJackGame server = new BlackJackGame();
+		server.newGame();
+		
 	}
+
+
+	
 }
