@@ -12,6 +12,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,6 +27,7 @@ import client.TimeCounter;
 import client.GameInterfaceController;
 //import client.gui.controller.GameListener;
 //import client.gui.jcomponents.MyPanel;
+import client.playerCards;
 
 
 
@@ -37,6 +40,8 @@ public class Interface extends JFrame {
          frame.setResizable(false);
          frame.setSize(950,635);
          frame.setVisible(true);
+         frame.setAmountOfPlayers(6);
+        
 	}
 	//Initialization JButtons
     private JButton buttonQuitGame;
@@ -89,7 +94,9 @@ public class Interface extends JFrame {
 
     //Clock info
    private String time;
-    
+   
+   private ArrayList<playerCards> playerCards = new ArrayList<playerCards>();
+   
    private GameInterfaceController controller;
    
    public Interface() {
@@ -365,11 +372,6 @@ public class Interface extends JFrame {
 				if(e.getSource() == buttonQuitGame) {	
 					controller.leave();//buttonQuitGa
 					exitGame();
-				/*} else if(e.getSource() == _buttonToGameRoom) {	
-					_cl.stopListenChat();
-					_controller.leave();
-					Launch.getMainMenu().getRoomFrame().setVisible(true);
-				*/
 				} else if(e.getSource() == buttonOptionSplit) {			//buttonOptionSplit
 					Interface.this.setAllOptionsDisabled();
 					controller.splitOperation();
@@ -440,16 +442,16 @@ public class Interface extends JFrame {
 			return amountOfPlayers;
 		}	
 		
-		/*//Set cards of the dealer, location depends on the amount of cards
+		//Set cards of the dealer, location depends on the amount of cards
 		public void setCardsDealer(String[] cardTypes) {
-			_handInfo.setText(_handAmounts);
+			handInfo.setText(handAmounts);
 			this.validate();
 			JLabel cardDeckName = null;
 			for(JPanel p : card1){
 				remove(p);
 			}
             card1 = new JPanel[cardTypes.length];
-            int _amountOfCards = cardTypes.length;
+            int amountOfCards = cardTypes.length;
             
             //Reset cards
             for(int i = 0; i<card1.length; i++) {
@@ -499,7 +501,7 @@ public class Interface extends JFrame {
 				card[i] = null;
 			}
             
-            int _amountOfCards = cardTypes.length;
+            int amountOfCards = cardTypes.length;
             
             try {
 				cardDeckName = new CardDeckLabel(getUsername(), Color.WHITE, 12, false).getJLabel();
@@ -520,7 +522,7 @@ public class Interface extends JFrame {
 			this.validate();
 		}
 		
-		/*
+		
 		//Set cards of the players, location depends on the amount of cards
 		public void setCardsPlayer(String[] cardTypes, String userName, int pos) throws Exception {
 			//Clean playerCards ArrayList
@@ -610,7 +612,7 @@ public class Interface extends JFrame {
 		public void clearPlayerCards() {
 			playerCards.clear();
 		}
-		*/
+		
 		public void roundcount(int parseInt) {
 			gameInformation.setText("Rounds : " + parseInt);
 			this.validate();
@@ -628,4 +630,53 @@ public class Interface extends JFrame {
 			
 		}
   
+}
+
+class playerCards {
+	private String[] playerCards;
+	private String playerName;
+	private JPanel[] card;
+	private JLabel name;
+	public playerCards() {}
+	
+	public JLabel getNameLabel() {
+
+		return name;
+	}
+
+	public void addNameLabel(JLabel label) {
+		name = label;
+		
+	}
+
+	public JPanel[] getCard() {
+		return card;
+	}
+
+	public playerCards(String[] playerCards, String playerName) {
+		this.setPlayerCards(playerCards);
+		this.setPlayerName(playerName);
+	}
+
+	public void setPlayerCards(String[] playerCards) {
+		this.playerCards = playerCards;
+	}
+
+	public String[] getPlayerCards() {
+		return playerCards;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+	
+	public void addCard(JPanel[] a){
+		card = a;
+	}
+	
+	
 }
