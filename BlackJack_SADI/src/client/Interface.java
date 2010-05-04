@@ -418,7 +418,6 @@ public class Interface extends JFrame {
 		 * Set available options for client
 		 * 
 		 * @param split Whether split should be enabled
-		 * @param Double Whether double should be enabled
 		 * @param hit Whether hit should be enabled
 		 * @param stand Whether stand should be enabled
 		 */
