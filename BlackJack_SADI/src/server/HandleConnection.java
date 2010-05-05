@@ -52,7 +52,7 @@ class HandleConnection implements GameStatus
 					
 					if (game.addWaitingPlayers(player))
 					{	
-						outputLine="You have entered username: " + username + "\n" + "You are added into waiting list.\n Please wait for the other players to get connected...\n";
+						outputLine="You have entered username: " + username + "\n" + "You are added into waiting list.\nPlease wait for the other players to get connected...\n";
 						out.writeUTF(outputLine);//send the msg to client side
 						out.flush();
 						game.addWaitingPlayersCount();

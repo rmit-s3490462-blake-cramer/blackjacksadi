@@ -12,7 +12,8 @@ import client.Interface;
 /**
  * Controller for the GameInterface
  */
-public class GameInterfaceController {
+public class GameInterfaceController 
+{
 	
 	/**
 	 * GameInterface belonging to this instance
@@ -32,7 +33,8 @@ public class GameInterfaceController {
 	/**
 	 * Constructs a new GameInterfaceController
 	 */
-	public GameInterfaceController(Interface g) {
+	public GameInterfaceController(Interface g) 
+	{
 		Interface = g;
 		//_gameInterface.setUsername(Launch.getUsername());
 		Interface.setPlayerHandAmounts("Hand 0 of 5");
@@ -48,14 +50,16 @@ public class GameInterfaceController {
 	 * @param hit Whether hit should be enabled
 	 * @param stand Whether stand should be enabled
 	 */
-	public void setOptions(boolean split,boolean hit, boolean stand) {
+	public void setOptions(boolean split,boolean hit, boolean stand) 
+	{
 		Interface.setOptions(split,hit, stand);
 	}
 
 	/**
 	 * Operation to perform on Split
 	 */
-	public void splitOperation() {
+	public void splitOperation() 
+	{
 		/*try {
 			_gsc.write("req,option,split");
 		} catch (IOException e) {
@@ -70,7 +74,8 @@ public class GameInterfaceController {
 	/**
 	 * Operation to perform on Stand
 	 */
-	public void standOperation() {
+	public void standOperation() 
+	{
 		/*try {
 			_gsc.write("req,option,stand");
 		} catch (IOException e) {
@@ -81,7 +86,8 @@ public class GameInterfaceController {
 	/**
 	 * Operation to perform on Hit
 	 */
-	public void hitOperation() {
+	public void hitOperation() 
+	{
 		/*try {
 			_gsc.write("req,option,hit");
 		} catch (IOException e) {
@@ -89,26 +95,31 @@ public class GameInterfaceController {
 		}*/
 	}
 	
-	public Interface getInterface(){
+	public Interface getInterface()
+	{
 		return this.Interface;
 	}
 
 		
-	public void setNumberPlayers(int n) {
+	public void setNumberPlayers(int n) 
+	{
 		numberOfPlayers = n;
 		Interface.setAmountOfPlayers(n);
 		
 	}
-	public int getNumberPlayers(){
+	public int getNumberPlayers()
+	{
 		return numberOfPlayers;
 	}
 
-	public void roundcount(int parseInt) {
+	public void roundcount(int parseInt) 
+	{
 		Interface.roundcount(parseInt);
 		
 	}
 	
-	public void leave(){
+	public void leave()
+	{
 		/*try {
 			_gsc.write("req,leave");
 		} catch (IOException e) {

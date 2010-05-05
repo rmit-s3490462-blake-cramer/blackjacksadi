@@ -20,6 +20,7 @@ class HandleSession extends Thread implements GameStatus
 	private BlackJackGame game = null;
 	private Vector <Player> players;
 	private boolean isGameEnd = false;
+	private int whoseTurn = 0;
 	
 	public HandleSession(BlackJackGame game)
 	{
@@ -43,6 +44,7 @@ class HandleSession extends Thread implements GameStatus
 		game.removeWaitingPlayers();//to change for connection
 	}
 	
+	//start
 	public void run()
 	{
 		
@@ -87,7 +89,8 @@ class HandleSession extends Thread implements GameStatus
 				else
 					game.append("Dealer has "+ hand.getCardsOnHand() + "\n");
 				
-				//tell the players the two card they are given
+				//tell the players the two card they are given 
+				//This approach if implemented for GUI based
 				for (int j=0; j<2; j++)
 				{
 					if(i<MAXPLAYERS)
@@ -101,8 +104,111 @@ class HandleSession extends Thread implements GameStatus
 					}
 				}
 			}
+		
+			//tell the players whose turn now
+			whoseTurn = game.getWhoseTurn();
+			game.append("Now is Player " + game.getWhoseTurn() + " turn.\n Waiting player to perform action.\n");
 			
-			while (!isGameEnd)
+			//Notify player to start
+			//toPlayer[game.getWhoseTurn()-1].writeInt(game.getWhoseTurn());
+			
+			
+			for (int i=0; i<players.size() && i < GameStatus.MAXPLAYERS; i++)
+			{
+				//send an integer to client indicating whose turn now
+				toPlayer[i].writeInt(game.getWhoseTurn());
+				
+				if ((i+1) == game.getWhoseTurn())
+				{
+					toPlayer[i].writeUTF("Your turn now.\nYou may type 1 to HIT, or 2 to stand.\n");
+					
+				}
+				else
+					toPlayer[i].writeUTF("Now is Player " + game.getWhoseTurn() + " turn.\nWaiting player to perform action...\n");
+			
+			}
+			boolean continueHit = true;
+			String actionString = "", cards = "";
+			
+			while (continueHit)
+			{
+				int action = fromPlayer[game.getWhoseTurn() - 1].readInt();
+				
+				if (action == HIT)
+				{
+					if(game.getPlayers().elementAt(game.getWhoseTurn() - 1).getHand().getCardsTotal() < 5)
+					{
+						actionString ="HIT";
+						game.hit();
+						continueHit = true;
+					}
+					else
+						action = STAND;
+				}
+				if (action == STAND)
+				{
+					actionString = "STAND";
+					continueHit = false;
+				}
+				else if(action == HIT)
+					actionString ="HIT";
+				else
+				{
+					actionString = "INVALID";
+					continueHit = true;
+				}
+				toPlayer[game.getWhoseTurn() - 1].writeBoolean(continueHit);
+				cards = game.getPlayers().elementAt(game.getWhoseTurn() - 1).getHand().getCardsOnHand().toString();
+				toPlayer[game.getWhoseTurn() - 1].writeUTF(cards);
+				
+				
+				String msg = "Player action: " + actionString + "\n";
+				game.append(msg);
+				game.append("Player " + game.getWhoseTurn() + " has cards: "  + cards + "\n");
+				
+				for (int i=0; i<players.size() && i < GameStatus.MAXPLAYERS; i++)
+				{
+					toPlayer[i].writeUTF(actionString);
+				}
+				if(!continueHit)
+				{
+					game.stand();
+				}
+			}
+			
+			
+			
+			
+			
+			/*
+			int action = fromPlayer[whoseTurn - 1].readInt();
+			for (int i=0; i<players.size() && i < GameStatus.MAXPLAYERS; i++)
+			{
+				toPlayer[i].writeUTF("Player " + whoseTurn + "action: " + action);
+			}
+			
+			boolean stillHit = true;
+			
+			while(stillHit)
+			{
+				action = fromPlayer[whoseTurn - 1].readInt();
+				if (action == HIT)
+				{
+					game.append("Player Hits.\n");
+					
+				}
+				else if (action == STAND)
+				{
+					game.append("Player Stands.\n");
+					stillHit = false;
+					game.stand();
+				}
+				
+				toPlayer[whoseTurn - 1].writeBoolean(stillHit);
+					
+			}*/
+			}
+			/*while (!isGameEnd)
 			{
 				//tell the players whose turn now
 				game.append("Now is Player " + game.getWhoseTurn() + " turn.\n Waiting player to perform action.\n");
@@ -119,6 +225,13 @@ class HandleSession extends Thread implements GameStatus
 					else
 						toPlayer[i].writeUTF("Now is Player " + game.getWhoseTurn() + " turn.\nWaiting player to perform action...\n");
 				}
+				
+				
+				
+				
+				
+				
+				
 				
 				boolean isContinueHit = true;
 				
@@ -171,8 +284,8 @@ class HandleSession extends Thread implements GameStatus
 			}
 			//
 				
-			
-		}
+			*/
+		
 		catch(IOException ex)
 		{
 			game.append(ex.toString());
