@@ -52,7 +52,6 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 	public void newGame()
 	{
 		deck = new BlackJackDeck();
-		
 		deck.shuffle();
 	}
 	
@@ -76,6 +75,23 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 	{
 		BlackJackCard aCard = deck.dealTopCard();
 		players.elementAt(whoseTurn -1).addCardToHand(aCard);
+	}
+	
+	public boolean hit()
+	{
+		BlackJackCard aCard = deck.dealTopCard();
+		if (players.elementAt(whoseTurn-1).getHand().getCardsTotal() < 5)
+		{
+			players.elementAt(whoseTurn -1).addCardToHand(aCard);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public void stand()
+	{
+		this.nextPlayer();
 	}
 	
 	@Override
