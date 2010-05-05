@@ -1,9 +1,14 @@
 package utility;
 
 import java.util.*;
+import java.io.*;
 
-public class BlackJackHand 
+public class BlackJackHand implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Vector<BlackJackCard> hand;
 	private int cardsTotal;
 	
@@ -26,11 +31,22 @@ public class BlackJackHand
 	{
 		return hand;
 	}
+	//return number of cards
+	public int getCardsTotal()
+	{
+		return cardsTotal;
+	}
 	
 	//return last card added
 	public BlackJackCard getLastCard()
 	{
 		return hand.elementAt(cardsTotal);
+	}
+	
+	//return one particular card
+	public BlackJackCard getCard(int atIndex)
+	{
+		return hand.elementAt(atIndex);
 	}
 	
 	//calculate the values of blackjack

@@ -9,7 +9,7 @@ public interface GameStatus
 	public static final int PLAYER4     = 4; // Indicate player 4 turn
 	public static final int PLAYER5     = 5; // Indicate player 5 turn
 	public static final int PLAYER6     = 6; // Indicate player 6 turn
-	public static final int  BEENKICKED = -100; //Tell the player he's being kicked out from the room 
+	public static final int BEENKICKED = -100; //Tell the player he's being kicked out from the room 
 	
 	public static final int DEALER_WON  = 17; // Indicate dealer won
 	public static final int PLAYER1_WON = 11; // Indicate player 1 won
@@ -21,14 +21,14 @@ public interface GameStatus
 	public static final int DRAW        = -1; // Indicate a draw
 	public static final int CONTINUE    = 100; // Indicate to continue
 	
-	public static final int MAXPLAYERS = 6;
+	public static final int MAXPLAYERS = 2;
 	public static final int MAXTRIALS = 5;
 	
 	public static final int SERVERSOCKET = 8000;
 	
 	public static final int DEAL  = 20;
-	public static final int HIT   = 21;
-	public static final int STAND = 22;
+	public static final int HIT   = 1;
+	public static final int STAND = 2;
 	public static final int SPLIT = 23;
 
 }
