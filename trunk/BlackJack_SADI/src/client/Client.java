@@ -16,7 +16,7 @@ public class  Client extends JFrame implements Runnable, GameStatus
 	private String username = null;
 	private BlackJackHand hand = null;
 	private int turn = 0, whoseTurn = 0;
-	private boolean isContinue = true, isGameEnd = false;
+	private boolean isContinue = true, isGameEnd = false, myTurn = true;
 	
 	//Talk to the server
 	private Socket socket = null;
@@ -50,10 +50,9 @@ public class  Client extends JFrame implements Runnable, GameStatus
 		//get notification from the server to start the game
 		try
 		{
-			fromServer = in.readUTF();
+			fromServer = in.readUTF();//get Game Started msg
 			append("Server says: " + fromServer + "\n");
-			this.turn = in.readInt();
-			append("I got it. So my turn is " + turn + "\n");
+			this.turn = in.readInt();//get player turn
 		}
 		catch(IOException ex)
 		{
@@ -73,64 +72,6 @@ public class  Client extends JFrame implements Runnable, GameStatus
 			}
 			append("The cards I have now are: " + hand.getCardsOnHand() + "\n");
 			
-			while (!isGameEnd)
-			{
-				//get notification from server whose turn now
-				whoseTurn = in.readInt();
-				append(in.readUTF());
-				isContinue = true;
-				//it's your turn, so do some action			
-				if(whoseTurn == turn)
-				{
-					while(isContinue)
-					{
-						System.out.println("Please insert your action number: ");
-						String inputAction = stdIn.readLine();
-						
-						
-						boolean validInput = false;
-						
-						//input the action
-						while (!validInput)
-						{
-							try
-							{
-						      // the String to int conversion happens here
-						      int action = Integer.parseInt(inputAction.trim());
-
-						      // send the action to server
-						      out.writeInt(action);
-						      validInput = true;
-						      
-						    }
-						    catch (NumberFormatException nfe)
-						    {
-						      append("NumberFormatException: " + nfe.getMessage() + "\n");
-						      append("Please try to input action again.\n");
-						      System.out.println("Please insert your action number: ");
-							  inputAction = stdIn.readLine();
-							  
-						    }						    
-						}
-						//display the cards after action
-						append("Server says: "+ in.readUTF());
-						
-						//get notified by server to continue or not
-						isContinue = in.readBoolean();
-						append("Server says continue? "+ isContinue + '\n');						
-						
-					}
-					//this.notifyAll();
-					//isGameEnd = in.readBoolean();
-				}
-				else//by pass all the output to server
-				{
-					//this.wait();
-				}
-				
-			}
-			
-			
 		}
 		catch(IOException ex)
 		{
@@ -143,6 +84,109 @@ public class  Client extends JFrame implements Runnable, GameStatus
 			append(e.toString());
 			e.printStackTrace();
 		}
+		
+		try 
+		{
+			append("Whose turn? " + (whoseTurn = in.readInt()) + "\n"); //get whose turn
+			append("Server says: " + in.readUTF() + "\n"); //get msg from server
+			
+			boolean bool = true;
+			
+			do
+			{
+				if (whoseTurn == turn)
+				{
+					sendAction();
+					bool = in.readBoolean();
+					append("Cards on hand now: " + in.readUTF() + "\n");
+				}
+				append("Player " + whoseTurn + " action: " + in.readUTF() + "\n");
+				
+			}while (bool);
+			
+			
+			
+				
+			
+			
+			//in.readBoolean();
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/*while(!isGameEnd)
+		{
+			if(turn == GameStatus.PLAYER1)
+			{
+				try 
+				{
+					this.waitForOtherPlayer();
+					sendAction();
+					receiveFromServer();
+				} 
+				catch (InterruptedException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			else
+			{
+				try 
+				{
+					receiveFromServer();
+					this.waitForOtherPlayer();
+					sendAction();
+					
+				} 
+				catch (InterruptedException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}*/
+
+        /*//send a move to server
+        try
+        {
+        	whoseTurn = in.readInt();
+        	append("Whose turn now? " + whoseTurn + "\n");
+        	//get notified from server
+        	append(in.readUTF());
+            if (whoseTurn == turn)
+            {
+                sendAction();
+            }
+            else
+            {
+                waitForOtherPlayer();
+                this.receiveFromServer();
+            }
+            
+            
+        }
+        catch (IOException ex)
+        {
+            
+        }
+        catch (InterruptedException ex)
+        {
+            
+        }*/
+		
 		
 	}
 	
@@ -174,7 +218,7 @@ public class  Client extends JFrame implements Runnable, GameStatus
 		//catch exception if cannot connect to server
 		try
 		{
-			//create a socket to connecto to server
+			//create a socket to connect to server
 			socket = new Socket (host, GameStatus.SERVERSOCKET);
 			
 			//create I/O streams to send/receive from server
@@ -208,8 +252,87 @@ public class  Client extends JFrame implements Runnable, GameStatus
 			System.err.println("Couldn't get I/O for the connection to " + host + "\n");
 			System.exit(ABORT);
 		}
+
+
 	}
 	
+	/******************THREAD ACTIONS********************/
+	//Wait for the other player to hit/stand
+	private void waitForOtherPlayer() throws InterruptedException
+	{
+		while(true)
+		{
+			Thread.sleep(1000);
+		}
+	}
+	
+	//send action to server
+	private void sendAction() throws IOException
+	{
+		System.out.println("Please insert your action number: ");
+		String inputAction = stdIn.readLine();
+			
+			
+		boolean validInput = false;
+		
+		//input the action
+		while (!validInput)
+		{
+			try
+			{
+		      // the String to int conversion happens here
+		      int action = Integer.parseInt(inputAction.trim());
+
+		      // send the action to server
+		      out.writeInt(action);
+		      validInput = true;
+		      
+		    }
+		    catch (NumberFormatException nfe)
+		    {
+		      append("NumberFormatException: " + nfe.getMessage() + "\n");
+		      append("Please try to input action again.\n");
+		      System.out.println("Please insert your action number: ");
+			  inputAction = stdIn.readLine();
+			  
+		    }						    
+		}
+	}
+	
+	//receive info from server
+	private void receiveFromServer() throws IOException
+	{
+		//receive game status
+		whoseTurn = in.readInt();//receive game status
+		
+		//if player_ won, stop playing
+		if (whoseTurn >=7)
+		{
+			isGameEnd = true;
+		}
+		
+		else
+		{
+			receiveMove();
+			//myTurn = true;
+		}
+		//else if no winner, game draw
+		//else if to continue, receiveMove()(from other players), then set whose turn
+	}
+	
+	//get the other player's move by reading from server
+	private void receiveMove()
+	{
+		try
+		{
+			int action = in.readInt();
+		}
+		catch (IOException e)
+		{
+			
+		}
+		
+	}
 	
 	
 	/***************************************************
