@@ -6,7 +6,7 @@ import java.util.*;
 
 import utility.*;
 
-class HandleConnection extends Thread implements GameStatus
+class HandleConnection implements GameStatus
 {
 	private DataOutputStream out = null;
 	private DataInputStream in = null;
@@ -55,7 +55,7 @@ class HandleConnection extends Thread implements GameStatus
 						outputLine="You have entered username: " + username + "\n" + "You are added into waiting list.\n Please wait for the other players to get connected...\n";
 						out.writeUTF(outputLine);//send the msg to client side
 						out.flush();
-						game.addPlayersCount();
+						game.addWaitingPlayersCount();
 					}
 					else
 					{	
@@ -73,6 +73,7 @@ class HandleConnection extends Thread implements GameStatus
 				Socket playerSocket = serverSocket.accept();
 				out = new DataOutputStream(playerSocket.getOutputStream());//send to client
 				out.writeUTF("Room is full. Please try again later.\n");
+				
 			}
 				
 		}
