@@ -26,18 +26,20 @@ public class Player implements GameStatus
 		hand = new BlackJackHand();
 	}
 	
-	//deal one card at a time and add into hand
-	public void deal()
+	/*//deal one card at a time and add into hand
+	public void deal(BlackJackCard card)
 	{
 		//deal means acknowledge the dealer to give out TWO cards
 		//so use the method hand.addCard(aCard); into hand
+		hand.addCard(card);
 	}
 	
 	//request another card from dealer
-	public void hit()
+	public void hit(BlackJackCard card)
 	{
 		//acknowledge the server to give out one card
 		//so use the method hand.addCard(aCard); into hand
+		hand.addCard(card);
 	}
 	
 	public void stand()
@@ -51,13 +53,18 @@ public class Player implements GameStatus
 	public void split()
 	{
 
-	}
+	}*/
 	/***************************************************
 	 * MODIFIER
 	****************************************************/
 	public void setPlayerTurn(int turn)
 	{
 		playerTurn = turn;
+	}
+	
+	public void addCardToHand(BlackJackCard aCard)
+	{
+		hand.addCard(aCard);
 	}
 	
 	/***************************************************
@@ -87,5 +94,7 @@ public class Player implements GameStatus
 	{
 		return hand;
 	}
+	
+	
 
 }
