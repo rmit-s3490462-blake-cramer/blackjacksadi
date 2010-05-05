@@ -28,10 +28,10 @@ public class CardDeckLabel extends JLabel {
 			setOpaque(false);
 			//Set background image for the dealer
 			if(dealer)
-				this.backgroundImage = new ImageIcon("data/labelBgDealer.png").getImage();
+				this.backgroundImage = new ImageIcon("img/labelBgDealer.png").getImage();
 			
 			//Set background image for a normal player
-			else this.backgroundImage = new ImageIcon("data/labelBg.png").getImage();
+			else this.backgroundImage = new ImageIcon("img/labelBg.png").getImage();
 		}
 	}
 	
