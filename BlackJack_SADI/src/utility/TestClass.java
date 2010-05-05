@@ -34,6 +34,8 @@ public class TestClass {
 		
 		hand.addCard(new BlackJackCard(1,1));
 		hand.addCard(new BlackJackCard(2,1));
+		hand.addCard(deck.dealTopCard());
+		System.out.println(hand.getClass());
 		//hand.addCard(new BlackJackCard(3,1));
 		
 		System.out.println("All the cards on hand are: " + hand.getCardsOnHand());
