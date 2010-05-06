@@ -104,10 +104,13 @@ class HandleSession extends Thread implements GameStatus
 					}
 				}
 			}
-			while(whoseTurn < DEALER)
+			
+			whoseTurn = game.getWhoseTurn();
+			
+			while(whoseTurn < DEALER && whoseTurn < players.size())
 			{
 				//tell the players whose turn now
-				whoseTurn = game.getWhoseTurn();
+
 				game.append("Now is Player " + game.getWhoseTurn() + " turn.\n Waiting player to perform action.\n");
 				
 				//Notify player to start
@@ -128,6 +131,7 @@ class HandleSession extends Thread implements GameStatus
 						toPlayer[i].writeUTF("Now is Player " + game.getWhoseTurn() + " turn.\nWaiting player to perform action...\n");
 				
 				}
+				
 				boolean continueHit = true;
 				String actionString = "", cards = "";
 				
@@ -158,9 +162,13 @@ class HandleSession extends Thread implements GameStatus
 						actionString = "INVALID";
 						continueHit = true;
 					}
-					toPlayer[game.getWhoseTurn() - 1].writeBoolean(continueHit);
+					
+					//toPlayer[game.getWhoseTurn() - 1].writeBoolean(continueHit);
+					//toPlayer[game.getWhoseTurn() - 1].writeUTF("CONTINUE");
 					cards = game.getPlayers().elementAt(game.getWhoseTurn() - 1).getHand().getCardsOnHand().toString();
 					toPlayer[game.getWhoseTurn() - 1].writeUTF(cards);
+					for(int i = 0; i < players.size() && i < GameStatus.MAXPLAYERS; i++)
+						toPlayer[i].writeBoolean(continueHit);
 					
 					
 					String msg = "Player action: " + actionString + "\n";
@@ -174,6 +182,7 @@ class HandleSession extends Thread implements GameStatus
 					if(!continueHit && action == STAND)
 					{
 						game.stand();
+						whoseTurn = game.getWhoseTurn();
 					}
 				}
 			}
@@ -181,7 +190,7 @@ class HandleSession extends Thread implements GameStatus
 			while (game.getDealer().getHand().isUnder17())
 				game.hit();
 			
-			game.append("Dealer has cards: " + game.getPlayers().elementAt(DEALER-1).getHand().getCardsOnHand());
+			game.append("Dealer has cards: " + game.getPlayers().elementAt(whoseTurn -1).getHand().getCardsOnHand());
 			
 			int results [] = new int [7];
 			for (int i = 0; i < players.size(); i ++)
