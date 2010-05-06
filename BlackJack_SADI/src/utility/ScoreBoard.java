@@ -54,6 +54,11 @@ public class ScoreBoard
 			return null;	
 	}
 	
+	public void setWinner(int player)
+	{
+		this.scores.elementAt(player - 1).addPoint();
+	}
+	
 	public int getNumberOfPlayers()
 	{
 		return numberOfPlayers;

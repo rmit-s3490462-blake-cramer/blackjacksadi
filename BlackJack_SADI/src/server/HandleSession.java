@@ -70,6 +70,9 @@ class HandleSession extends Thread implements GameStatus
 			//start a new game
 			game.newGame();
 			
+			//create the scoreboard
+			game.initScoreBoard(game.getPlayersCount());
+			
 			//distribute to each player 2 cards (dealer the last)
 			for (int j=0; j<2; j++)
 			{
@@ -190,22 +193,40 @@ class HandleSession extends Thread implements GameStatus
 			while (game.getDealer().getHand().isUnder17())
 				game.hit();
 			
-			game.append("Dealer has cards: " + game.getPlayers().elementAt(whoseTurn -1).getHand().getCardsOnHand());
+			game.append("Dealer has cards: " + game.getPlayers().elementAt(whoseTurn -1).getHand().getCardsOnHand() + '\n');
 			
-			int results [] = new int [7];
-			for (int i = 0; i < players.size(); i ++)
+			int results [] = new int [game.getPlayersCount()];
+			int highestPoint = 0, winnerTurn = 0;		
+			boolean isMoreWinner = false; /*counter keep track of two or more winner*/
+			
+			for (int i = 0; i < game.getPlayersCount(); i ++)
 			{
 				results[i] = game.getPlayers().elementAt(i).getHand().calculateValue();
+				
+				if(!game.getPlayers().elementAt(i).getHand().isBurst())
+				{
+					if (results[i] > highestPoint)
+					{
+						highestPoint = results[i];
+					}
+					else if (results[i] == highestPoint)
+					{
+						isMoreWinner = true;
+					}
+					
+					if (!isMoreWinner)
+						winnerTurn = i + 1;
+					else
+						winnerTurn = DRAW;
+				}
 			}
+			
+			game.append("\nThe winner is Player " + winnerTurn + '\n');
+			
+			
 			
 			//game.getScoreBoard();
-			
-			
-			
-			
-			
-			
-			}
+		}
 			
 		
 		catch(IOException ex)
