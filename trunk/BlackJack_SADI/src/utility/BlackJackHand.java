@@ -155,6 +155,15 @@ public class BlackJackHand implements Serializable
 	}
 	
 	//check if the cards in hand is over 17
+	public boolean isUnder17()
+	{
+		if (calculateValue() < 17 )
+			return true;
+		else
+			return false;
+	}
+	
+	//check if the cards in hand is over 17
 	public boolean isOver17()
 	{
 		if (calculateValue() >= 17 )
