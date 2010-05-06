@@ -18,7 +18,7 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 	private Vector <Player> players;
 	private Vector <Player> waitingPool;
 	private ScoreBoard scoreBoard;
-	private int playersCount, waitingPlayersCount, whoseTurn, trials;
+	private int playersCount, waitingPlayersCount, whoseTurn, trial;
 
 	private boolean isContinue;
 	
@@ -34,11 +34,12 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 	{
 		playersCount = 0;
 		waitingPlayersCount = 0;
-		trials = 1;
+		trial = 1;
 		dealer = new Player();
 		players = new Vector<Player>();
 		waitingPool = new Vector<Player>();
 		whoseTurn = GameStatus.PLAYER1;
+		
 		setupFrame();
 		createConnections();
 	}
@@ -135,13 +136,13 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 		return whoseTurn;
 	}
 	
-	public int addTrial()
+	public int nextTrial()
 	{
-		if(trials <= MAXTRIALS)
-			trials ++;
+		if(trial <= MAXTRIALS)
+			trial ++;
 		else
-			trials = 1;
-		return trials;
+			trial = 1;
+		return trial;
 	}
 	
 	public void addPlayersCount()
@@ -164,10 +165,16 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 		waitingPlayersCount--;
 	}
 	
-	public void setScoreBoard(int numOfPlayers)
+	public void initScoreBoard(int numOfPlayers)
 	{
-		
+		scoreBoard = new ScoreBoard(numOfPlayers);
 	}
+	
+	public void setWinner(int playerTurn)
+	{
+		scoreBoard.setWinner(playerTurn);
+	}
+	
 	
 	/***************************************************
 	 * ACCESSORS
@@ -199,7 +206,7 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 	
 	public int getTrial()
 	{
-		return trials;
+		return trial;
 	}
 	
 	public int getPlayersCount()
