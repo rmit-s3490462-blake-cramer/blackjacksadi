@@ -164,6 +164,10 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 		waitingPlayersCount--;
 	}
 	
+	public void setScoreBoard(int numOfPlayers)
+	{
+		
+	}
 	
 	/***************************************************
 	 * ACCESSORS
