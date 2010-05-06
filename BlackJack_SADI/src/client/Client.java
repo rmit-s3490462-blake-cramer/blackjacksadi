@@ -90,10 +90,11 @@ public class  Client extends JFrame implements Runnable, GameStatus
 			while(true)
 			{
 				String temp;
+				//temp = in.readUTF();
 				append("\nWhose turn? " + (whoseTurn = in.readInt()) + "\n"); //get whose turn
+				System.out.println(whoseTurn);
 				temp = in.readUTF();
 				append("Server says: " + temp + "\n"); //get msg from server
-				//System.out.println("3");
 				boolean hit = true;
 				
 				do
@@ -101,15 +102,15 @@ public class  Client extends JFrame implements Runnable, GameStatus
 					if (whoseTurn == turn)
 					{
 						sendAction();
-						hit = in.readBoolean();
 						append("Cards on hand now: " + in.readUTF() + "\n");
 					}
-					else
-						hit = false;
+					//else
+						//hit = false;
+					hit = in.readBoolean();
 					
 					append("Player " + whoseTurn + " action: " + in.readUTF() + "\n");
 					
-					System.out.println(hit);
+					//System.out.println(hit);
 				}while (hit);
 			}
 		} 
