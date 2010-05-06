@@ -24,7 +24,7 @@ public class  Client extends JFrame implements Runnable, GameStatus
 	private DataInputStream in = null;
 	
 	private String host = "localhost";
-	private BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); //userInput is here
+	//private BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); //userInput is here
 	private String fromServer;//string from server
 	private String fromClient;//string from client
 	
@@ -87,107 +87,37 @@ public class  Client extends JFrame implements Runnable, GameStatus
 		
 		try 
 		{
-			append("Whose turn? " + (whoseTurn = in.readInt()) + "\n"); //get whose turn
-			append("Server says: " + in.readUTF() + "\n"); //get msg from server
-			
-			boolean bool = true;
-			
-			do
+			while(true)
 			{
-				if (whoseTurn == turn)
+				String temp;
+				append("\nWhose turn? " + (whoseTurn = in.readInt()) + "\n"); //get whose turn
+				temp = in.readUTF();
+				append("Server says: " + temp + "\n"); //get msg from server
+				//System.out.println("3");
+				boolean hit = true;
+				
+				do
 				{
-					sendAction();
-					bool = in.readBoolean();
-					append("Cards on hand now: " + in.readUTF() + "\n");
-				}
-				append("Player " + whoseTurn + " action: " + in.readUTF() + "\n");
-				
-			}while (bool);
-			
-			
-			
-				
-			
-			
-			//in.readBoolean();
+					if (whoseTurn == turn)
+					{
+						sendAction();
+						hit = in.readBoolean();
+						append("Cards on hand now: " + in.readUTF() + "\n");
+					}
+					else
+						hit = false;
+					
+					append("Player " + whoseTurn + " action: " + in.readUTF() + "\n");
+					
+					System.out.println(hit);
+				}while (hit);
+			}
 		} 
 		catch (IOException e) 
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		/*while(!isGameEnd)
-		{
-			if(turn == GameStatus.PLAYER1)
-			{
-				try 
-				{
-					this.waitForOtherPlayer();
-					sendAction();
-					receiveFromServer();
-				} 
-				catch (InterruptedException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-			else
-			{
-				try 
-				{
-					receiveFromServer();
-					this.waitForOtherPlayer();
-					sendAction();
-					
-				} 
-				catch (InterruptedException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}*/
-
-        /*//send a move to server
-        try
-        {
-        	whoseTurn = in.readInt();
-        	append("Whose turn now? " + whoseTurn + "\n");
-        	//get notified from server
-        	append(in.readUTF());
-            if (whoseTurn == turn)
-            {
-                sendAction();
-            }
-            else
-            {
-                waitForOtherPlayer();
-                this.receiveFromServer();
-            }
-            
-            
-        }
-        catch (IOException ex)
-        {
-            
-        }
-        catch (InterruptedException ex)
-        {
-            
-        }*/
-		
-		
 	}
 	
 	/***************************************************
@@ -270,6 +200,7 @@ public class  Client extends JFrame implements Runnable, GameStatus
 	private void sendAction() throws IOException
 	{
 		System.out.println("Please insert your action number: ");
+		BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 		String inputAction = stdIn.readLine();
 			
 			
