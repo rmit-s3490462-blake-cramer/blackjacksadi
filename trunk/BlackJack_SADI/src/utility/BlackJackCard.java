@@ -71,6 +71,11 @@ public class BlackJackCard implements Serializable
 			return value;
 	}
 	
+	public int getCardValue()
+	{
+		return value;
+	}
+	
 	//get the suit of the card
 	public int getSuit()
 	{
