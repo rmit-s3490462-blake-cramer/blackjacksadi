@@ -67,6 +67,11 @@ public class Player implements GameStatus
 		hand.addCard(aCard);
 	}
 	
+	public void resetHand()
+	{
+		hand.resetHand();
+	}
+	
 	/***************************************************
 	 * ACCESSORS
 	****************************************************/
