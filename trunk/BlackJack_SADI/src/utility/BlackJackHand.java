@@ -3,12 +3,11 @@ package utility;
 import java.util.*;
 import java.io.*;
 
-public class BlackJackHand implements Serializable
+public class BlackJackHand
 {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private Vector<BlackJackCard> hand;
 	private int cardsTotal;
 	
@@ -55,8 +54,6 @@ public class BlackJackHand implements Serializable
 		hand.add(aCard);
 		cardsTotal++;
 	}
-	
-	
 	
 	/***************************************************
 	 * CALCULATION

@@ -2,12 +2,11 @@ package utility;
 
 import java.io.*;
 
-public class BlackJackCard implements Serializable
+public class BlackJackCard
 {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	//Declare the suits
 	public final static int DIAMONDS = 0;
 	public final static int CLUBS    = 1;

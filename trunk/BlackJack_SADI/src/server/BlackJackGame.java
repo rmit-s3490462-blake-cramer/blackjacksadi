@@ -70,10 +70,6 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 		this.whoseTurn = 1;
 	}
 	
-	public void results()
-	{
-		
-	}
 	
 	/*****************Actions**********************/
 	public void deal()
