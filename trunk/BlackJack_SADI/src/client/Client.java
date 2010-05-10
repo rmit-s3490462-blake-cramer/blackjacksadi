@@ -30,16 +30,6 @@ public class  Client extends JFrame implements Runnable, GameStatus
 	
 	public Client()
 	{
-		
-		/*try
-		{
-			System.out.println("Please insert your username: ");
-			username = stdIn.readLine();//now input username
-		}
-		catch (IOException ex)
-		{
-			System.err.println();
-		}*/
 		username="test";
 		
 		setupFrame();
@@ -135,16 +125,18 @@ public class  Client extends JFrame implements Runnable, GameStatus
 				{
 					if (winner == turn)
 					{
-						winnerMsg = "You Won!";
+						winnerMsg = "*******You Won! =D*******";
 					}
 					else if (winner != turn)
-						winnerMsg = "You Lose!";
+						winnerMsg = "You Lose! =(";
 				}
 				
 				winnerMsg += "\n";
 				
 				append(winnerMsg);
 			}
+			
+			append(in.readUTF());//get the scoreboard
 			
 		} 
 		catch (IOException e) 
@@ -216,20 +208,9 @@ public class  Client extends JFrame implements Runnable, GameStatus
 			System.err.println("Couldn't get I/O for the connection to " + host + "\n");
 			System.exit(ABORT);
 		}
-
-
 	}
 	
-	/******************THREAD ACTIONS********************/
-	//Wait for the other player to hit/stand
-	private void waitForOtherPlayer() throws InterruptedException
-	{
-		while(true)
-		{
-			Thread.sleep(1000);
-		}
-	}
-	
+	/******************THREAD ACTIONS********************/	
 	//send action to server
 	private void sendAction() throws IOException
 	{
@@ -263,42 +244,6 @@ public class  Client extends JFrame implements Runnable, GameStatus
 		    }						    
 		}
 	}
-	
-	//receive info from server
-	private void receiveFromServer() throws IOException
-	{
-		//receive game status
-		whoseTurn = in.readInt();//receive game status
-		
-		//if player_ won, stop playing
-		if (whoseTurn >=7)
-		{
-			isGameEnd = true;
-		}
-		
-		else
-		{
-			receiveMove();
-			//myTurn = true;
-		}
-		//else if no winner, game draw
-		//else if to continue, receiveMove()(from other players), then set whose turn
-	}
-	
-	//get the other player's move by reading from server
-	private void receiveMove()
-	{
-		try
-		{
-			int action = in.readInt();
-		}
-		catch (IOException e)
-		{
-			
-		}
-		
-	}
-	
 	/***************************************************
 	 * DEFAULT METHODS
 	****************************************************/

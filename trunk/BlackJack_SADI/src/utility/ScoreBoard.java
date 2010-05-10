@@ -19,52 +19,38 @@ public class ScoreBoard
 	{
 		scores = new Vector <Score>();
 		this.numberOfPlayers = numberOfPlayers;
+		
+		//create scores for each player
 		for (int i=1; i<=numberOfPlayers; i++)
 		{
 			scores.add(new Score(i));
 		}
+		scores.add(new Score(numberOfPlayers +1 )); /* This is for the dealer's score*/ 
 	}
 	
-	//Not useful in this case
-	public Vector<Integer> getWinner()
-	{
-		int highestPoint = 0, temp;
-		Score score;
-		Vector <Integer>winner = new Vector<Integer>();
-		Iterator<Score> ite = scores.iterator();
-		if(!scores.isEmpty())
-		{
-			while (ite.hasNext())
-			{
-				score = ite.next();
-				temp = score.getPoints();
-				if (temp == highestPoint )
-				{
-					winner.add(score.getPlayer());
-				}
-				else if( temp > highestPoint)
-				{
-					highestPoint = temp;
-					winner.clear();
-					winner.add(score.getPlayer());
-				}
-			}	
-			return winner;
-		}
-		else
-			return null;	
-	}
-	
+		
 	//Set the winner of the game for that trial
 	public void setWinner(int player)
 	{
-		this.scores.elementAt(player - 1).addPoint();
+		this.scores.elementAt(player-1).addPoint();
 	}
 	
 	//get number of players in the scoreboard
 	public int getNumberOfPlayers()
 	{
 		return numberOfPlayers;
+	}
+	
+	//get the string to display out the scores
+	public String getResults()
+	{
+		String results = "\nPlayer   | Points\n------------------\n";
+		for (int i=0; i<numberOfPlayers; i++)
+		{
+			results += "Player " + (i+1) + " | " + scores.elementAt(i).getPoints() + "\n";
+		}
+		results += "Dealer  " + " | " + scores.elementAt(numberOfPlayers).getPoints() + "\n";
+		return results;
 	}
 
 }

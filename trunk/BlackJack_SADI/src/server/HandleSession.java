@@ -114,7 +114,8 @@ class HandleSession extends Thread implements GameStatus
 						}
 					}
 				}
-					
+				game.append("\n------------------------------Trial = " + game.getTrial() + "--------------------------------\n");	
+				
 				//List down the cards that each players has in server side
 				for (int i=0; i<players.size() && i < GameStatus.MAXPLAYERS + 1; i++)
 				{
@@ -133,9 +134,6 @@ class HandleSession extends Thread implements GameStatus
 					//tell the players trial number
 					toPlayer[i].writeUTF("\nTrial = " + game.getTrial());
 				}
-				game.append("----------------------Trial = " + game.getTrial() + "------------------------\n");
-				//game.append("----------WhoseTurn1:----------" + game.getWhoseTurn() +"\n");
-				//game.append("----------PlayersCounts:----------" + game.getPlayersCount()+"\n");
 				
 				//Tell all the players in the player list about their turns
 				while(whoseTurn < DEALER && whoseTurn < players.size())
@@ -278,8 +276,6 @@ class HandleSession extends Thread implements GameStatus
 					highestPoint = 0;
 					winnerTurn = DRAW;
 				}
-				game.append("**highestPoint = " + highestPoint + "**winnerTurn = " + winnerTurn + "**hasMoreWinner = " + hasMoreWinner +" hasTwoAce = " + hasTwoAce +" hasBlackJack = " + hasBlackJack + "\n");
-				
 				//compare with the dealer's value (if dealer is not burst)
 				for (int i = 0; i < game.getPlayersCount(); i ++)
 				{
@@ -336,7 +332,6 @@ class HandleSession extends Thread implements GameStatus
 							//break;
 						}
 					}
-					game.append("**highestPoint = " + highestPoint + "**winnerTurn = " + winnerTurn + "**hasMoreWinner = " + hasMoreWinner +" hasTwoAce = " + hasTwoAce +" hasBlackJack = " + hasBlackJack + "\n");
 				}
 				
 				//Determine the winner msg
@@ -348,7 +343,7 @@ class HandleSession extends Thread implements GameStatus
 					if(winnerTurn <= game.getPlayersCount())
 						winnerMsg = "\nThe winner is Player " + winnerTurn + '\n';
 					else
-						winnerMsg = "\nThe dealer wins the game!\n";
+						winnerMsg = "\n*******The dealer wins the game!*******\n";
 				}
 				winnerMsg += "\n";
 				game.append(winnerMsg);
@@ -366,7 +361,18 @@ class HandleSession extends Thread implements GameStatus
 				//tell the client who's the winner
 				for (int i = 0; i < game.getPlayersCount(); i ++)
 					toPlayer[i].writeInt(winnerTurn);
+				
+				//add the winner into scoreboard
+				game.setWinner(winnerTurn);
 			}
+			
+			//display the score board
+			String scoreBoard = game.getScoreBoard().getResults();
+			game.append("Scores for this game: " + scoreBoard + "\n" );
+			
+			//send the scoreboard to the client
+			for (int i = 0; i < game.getPlayersCount(); i ++)
+				toPlayer[i].writeUTF(scoreBoard);	
 		}
 		catch(IOException ex)
 		{

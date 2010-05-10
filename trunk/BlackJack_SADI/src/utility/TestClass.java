@@ -73,6 +73,17 @@ public class TestClass {
 		System.out.println("Is 2Aces? = " + hand.isTwoAce());
 		System.out.println("Is BlackJack? = " + hand.isBlackJack());
 		
+		ScoreBoard sb = new ScoreBoard(4);
+		sb.setWinner(4);
+		sb.setWinner(4);
+		sb.setWinner(4);
+		sb.setWinner(4);
+		sb.setWinner(4);
+		sb.setWinner(5);
+		
+		System.out.println("Scores:" + sb.getResults());
+		
+		
 		/*BlackJackGame game = new BlackJackGame();
 		Player player = new Player();
 		Vector <Player> v = new Vector<Player>();
