@@ -52,5 +52,9 @@ public class BlackJackDeck
 		}
 	}
 	
+	public int getCardsLeft()
+	{
+		return cardsLeft;
+	}
 	
 }

@@ -4,27 +4,28 @@ import java.util.*;
 
 import server.*;
 import client.*;
-
+/*
+ * BlackJackGame will assign each player with a special ID
+ * from GameStatus (0-6)
+ * by passing in the number of players, we can know how many
+ * players to be in scoreboard
+ */
 public class ScoreBoard 
 {
 	private Vector <Score> scores;
 	private int numberOfPlayers; 
 
-
-	//BlackJackGame will assign each player with a special ID
-	//from GameStatus (0-6)
-	//dealer will anyhow be the first 'player' in the game
-	//by passing in the number of players, we can know how many 
 	public ScoreBoard(int numberOfPlayers)
 	{
 		scores = new Vector <Score>();
 		this.numberOfPlayers = numberOfPlayers;
-		for (int i=0; i<=numberOfPlayers; i++)
+		for (int i=1; i<=numberOfPlayers; i++)
 		{
 			scores.add(new Score(i));
 		}
 	}
 	
+	//Not useful in this case
 	public Vector<Integer> getWinner()
 	{
 		int highestPoint = 0, temp;
@@ -54,11 +55,13 @@ public class ScoreBoard
 			return null;	
 	}
 	
+	//Set the winner of the game for that trial
 	public void setWinner(int player)
 	{
 		this.scores.elementAt(player - 1).addPoint();
 	}
 	
+	//get number of players in the scoreboard
 	public int getNumberOfPlayers()
 	{
 		return numberOfPlayers;

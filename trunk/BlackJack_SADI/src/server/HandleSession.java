@@ -310,7 +310,7 @@ class HandleSession extends Thread implements GameStatus
 							//break;
 						}
 					}
-					else if (!playerHand.isOnlyTwoCards())
+					else if (!playerHand.isOnlyTwoCards() && (playerHand.isOver17() && playerHand.isUnder21()))
 					{
 						if(playerHand.is21() && (hasBlackJack == false || hasTwoAce == false))
 						{
@@ -320,7 +320,7 @@ class HandleSession extends Thread implements GameStatus
 								winnerTurn = i + 1;
 							}
 						}
-						else if((playerHand.isOver17() && playerHand.isUnder21())&& (hasBlackJack == false || hasTwoAce == false))
+						else if((hasBlackJack == false || hasTwoAce == false))
 						{
 							if (playerValue[i] > highestPoint)
 							{
@@ -333,7 +333,7 @@ class HandleSession extends Thread implements GameStatus
 						{
 							hasMoreWinner = true;
 							winnerTurn = DRAW;
-							break;
+							//break;
 						}
 					}
 					game.append("**highestPoint = " + highestPoint + "**winnerTurn = " + winnerTurn + "**hasMoreWinner = " + hasMoreWinner +" hasTwoAce = " + hasTwoAce +" hasBlackJack = " + hasBlackJack + "\n");
