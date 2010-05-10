@@ -1,7 +1,10 @@
-#Protocol Diagram of BlackJack Game
+#summary Protocol Diagram of BlackJack Game
+#labels protocolDiagram
 
-= Introduction =
+= Protocol Diagram （Final) = 
 
-Protocol Diagram
+<img src="http://blackjacksadi.googlecode.com/files/protocolDiagram_final.jpg"/>
 
-<img src="http://code.google.com/p/blackjacksadi/source/browse/wiki/blackjack.jpg"/>
+= Protocol Diagram = 
+
+<img src="http://blackjacksadi.googlecode.com/files/blackjack.jpg"/>
