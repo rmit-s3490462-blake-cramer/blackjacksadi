@@ -1,6 +1,11 @@
 #summary Class Diagram
 #labels classdiagram
 
+= Class Diagram final =
+Added 10th MAY 2010 (matching the final code submitted)
+
+<a href="http://blackjacksadi.googlecode.com/files/classDiagram_final.jpg"><img src="http://blackjacksadi.googlecode.com/files/classDiagram_final.jpg" alt="class diagram final" height="1000"/></a>
+
 = Class Diagram v3 =
 Added 29th April 2010 (only minor changes on association and add in Constants for GameStatus)
 
