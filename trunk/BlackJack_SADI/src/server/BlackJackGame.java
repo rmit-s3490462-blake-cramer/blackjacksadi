@@ -19,9 +19,6 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 	private Vector <Player> waitingPool;
 	private ScoreBoard scoreBoard;
 	private int playersCount, waitingPlayersCount, whoseTurn, trial;
-
-	private boolean isContinue;
-	
 	
 	//To display out the messages
 	private JTextArea jtaLog;
@@ -54,16 +51,23 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 	{
 		deck = new BlackJackDeck();
 		deck.shuffle();
+		trial = 1;
 	}
 	
 	//restart the game with another trial and less than 5
 	public void restartGame()
 	{
 		//initialise the deck and clear off the players and dealer
-		//then newGame()
 		//then add players from the waiting pool
+		
 		deck = new BlackJackDeck();
 		deck.shuffle();
+		for(int i=0; i <= this.getPlayersCount(); i++)
+		{
+			 players.elementAt(i).resetHand();
+		}
+		this.nextTrial();
+		this.whoseTurn = 1;
 	}
 	
 	public void results()
@@ -108,10 +112,7 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 	public boolean addPlayer(Player player)
 	{
 		if(players.add(player))
-		{
-			
 			return true;
-		}
 		return false;
 	}
 	
@@ -142,6 +143,7 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 			trial ++;
 		else
 			trial = 1;
+			
 		return trial;
 	}
 	
@@ -175,7 +177,6 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 		scoreBoard.setWinner(playerTurn);
 	}
 	
-	
 	/***************************************************
 	 * ACCESSORS
 	****************************************************/
@@ -197,6 +198,11 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 	public ScoreBoard getScoreBoard()
 	{
 		return scoreBoard;
+	}
+	
+	public BlackJackDeck getDeck()
+	{
+		return deck;
 	}
 	
 	public int getWhoseTurn()
@@ -284,7 +290,4 @@ public class BlackJackGame extends JFrame implements Runnable, GameStatus
 		server.newGame();
 		
 	}
-
-
-	
 }
