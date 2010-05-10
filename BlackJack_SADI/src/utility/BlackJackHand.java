@@ -19,13 +19,10 @@ public class BlackJackHand implements Serializable
 		cardsTotal = 0;
 	}
 	
-	//add a card into hand
-	public void addCard(BlackJackCard aCard)
-	{
-		hand.add(aCard);
-		cardsTotal++;
-	}
 	
+	/***************************************************
+	 * ACCESSORS
+	****************************************************/
 	//return all the cards on hand
 	public Vector <BlackJackCard>getCardsOnHand()
 	{
@@ -40,7 +37,7 @@ public class BlackJackHand implements Serializable
 	//return last card added
 	public BlackJackCard getLastCard()
 	{
-		return hand.elementAt(cardsTotal);
+		return hand.elementAt(cardsTotal-1);
 	}
 	
 	//return one particular card
@@ -49,6 +46,21 @@ public class BlackJackHand implements Serializable
 		return hand.elementAt(atIndex);
 	}
 	
+	/***************************************************
+	 * MODIFIER
+	****************************************************/
+	//add a card into hand
+	public void addCard(BlackJackCard aCard)
+	{
+		hand.add(aCard);
+		cardsTotal++;
+	}
+	
+	
+	
+	/***************************************************
+	 * CALCULATION
+	****************************************************/
 	//calculate the values of blackjack
 	public int calculateValue()
 	{
@@ -112,7 +124,8 @@ public class BlackJackHand implements Serializable
 			firstCard = hand.elementAt(0);
 			secondCard = hand.elementAt(1);
 			
-			if((firstCard.getValue() == BlackJackCard.ACE || firstCard.getValue() == 10) &&(secondCard.getValue() == BlackJackCard.ACE || secondCard.getValue() == 10) )
+			
+			if((firstCard.getValue() == BlackJackCard.ACE && secondCard.getValue() == 10)||(firstCard.getValue() == 10 && secondCard.getValue() == BlackJackCard.ACE) )
 				return true;
 			else 
 				return false;

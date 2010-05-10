@@ -31,25 +31,55 @@ public class TestClass {
 		System.out.println("Top card now is = " + deck.topCard());
 		System.out.println("---------------------------------");*/
 		
-		
-		hand.addCard(new BlackJackCard(1,1));
-		hand.addCard(new BlackJackCard(2,1));
+		//random card
+		hand = new BlackJackHand();
+		hand.addCard(new BlackJackCard(BlackJackCard.DIAMONDS,4));
+		hand.addCard(new BlackJackCard(BlackJackCard.CLUBS,10));
 		hand.addCard(deck.dealTopCard());
 		System.out.println(hand.getClass());
-		//hand.addCard(new BlackJackCard(3,1));
 		
-		System.out.println("All the cards on hand are: " + hand.getCardsOnHand());
+		System.out.println("\nAll the cards on hand are: " + hand.getCardsOnHand());
 		System.out.println("The value of cards in hand = " + hand.calculateValue());
 		
 		System.out.println("Is burst? = " + hand.isBurst());
+		System.out.println("Is 2Aces? = " + hand.isTwoAce());
+		System.out.println("Is BlackJack? = " + hand.isBlackJack());
 		
-		BlackJackGame game = new BlackJackGame();
+		//two aces
+		hand = new BlackJackHand();
+		hand.addCard(new BlackJackCard(BlackJackCard.SPADES,BlackJackCard.ACE));
+		hand.addCard(new BlackJackCard(BlackJackCard.CLUBS,BlackJackCard.ACE));
+		//hand.addCard(deck.dealTopCard());
+		System.out.println(hand.getClass());
+		
+		System.out.println("\nAll the cards on hand are: " + hand.getCardsOnHand());
+		System.out.println("The value of cards in hand = " + hand.calculateValue());
+		
+		System.out.println("Is burst? = " + hand.isBurst());
+		System.out.println("Is 2Aces? = " + hand.isTwoAce());
+		System.out.println("Is BlackJack? = " + hand.isBlackJack());
+	
+		//blackjack
+		hand = new BlackJackHand();
+		hand.addCard(new BlackJackCard(BlackJackCard.SPADES,BlackJackCard.JACK));
+		hand.addCard(new BlackJackCard(BlackJackCard.CLUBS,BlackJackCard.ACE));
+		//hand.addCard(deck.dealTopCard());
+		System.out.println(hand.getClass());
+		
+		System.out.println("\nAll the cards on hand are: " + hand.getCardsOnHand());
+		System.out.println("The value of cards in hand = " + hand.calculateValue());
+		
+		System.out.println("Is burst? = " + hand.isBurst());
+		System.out.println("Is 2Aces? = " + hand.isTwoAce());
+		System.out.println("Is BlackJack? = " + hand.isBlackJack());
+		
+		/*BlackJackGame game = new BlackJackGame();
 		Player player = new Player();
 		Vector <Player> v = new Vector<Player>();
 		v.add(player);
 		
 		
-		System.out.println(v.elementAt(0).toString());
+		System.out.println(v.elementAt(0).toString());*/
 		
 	}
 

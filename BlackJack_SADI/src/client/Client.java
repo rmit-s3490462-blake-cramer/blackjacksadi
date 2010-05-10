@@ -15,8 +15,8 @@ public class  Client extends JFrame implements Runnable, GameStatus
 	private JTextArea jtaLog;
 	private String username = null;
 	private BlackJackHand hand = null;
-	private int turn = 0, whoseTurn = 0;
-	private boolean isContinue = true, isGameEnd = false, myTurn = true;
+	private int turn = 0, whoseTurn = 0, trials = 1;
+	private boolean isContinue = true, isGameEnd = false, isMyTurn = true;
 	
 	//Talk to the server
 	private Socket socket = null;
@@ -30,7 +30,7 @@ public class  Client extends JFrame implements Runnable, GameStatus
 	
 	public Client()
 	{
-		setupFrame();
+		
 		/*try
 		{
 			System.out.println("Please insert your username: ");
@@ -41,7 +41,8 @@ public class  Client extends JFrame implements Runnable, GameStatus
 			System.err.println();
 		}*/
 		username="test";
-		hand = new BlackJackHand();
+		
+		setupFrame();
 		connectToServer();
 	}
 	
@@ -50,69 +51,101 @@ public class  Client extends JFrame implements Runnable, GameStatus
 		//get notification from the server to start the game
 		try
 		{
-			fromServer = in.readUTF();//get Game Started msg
-			append("Server says: " + fromServer + "\n");
-			this.turn = in.readInt();//get player turn
+			append("Server says: " + in.readUTF() + "\n");
+			turn = in.readInt();//get player turn
 		}
 		catch(IOException ex)
 		{
 			System.err.println(ex);
 			System.exit(ABORT);
 		}
-		
-		try
-		{
-			// get the dealt cards
-			for (int j=0; j<2; j++)
-			{
-				//get the suit then value
-				int suit = in.readInt();
-				int value = in.readInt();
-				hand.addCard(new BlackJackCard(suit, value));
-			}
-			append("The cards I have now are: " + hand.getCardsOnHand() + "\n");
 			
-		}
-		catch(IOException ex)
-		{
-			System.err.println(ex);
-			append("Can't get cards from server");
-		} 
-		catch (IllegalMonitorStateException e) 
-		{
-			// TODO Auto-generated catch block
-			append(e.toString());
-			e.printStackTrace();
-		}
-		
 		try 
 		{
-			while(true)
+			
+			for (int trial = 0; trial < MAXTRIALS; trial++)
 			{
-				String temp;
-				//temp = in.readUTF();
-				append("\nWhose turn? " + (whoseTurn = in.readInt()) + "\n"); //get whose turn
-				System.out.println(whoseTurn);
-				temp = in.readUTF();
-				append("Server says: " + temp + "\n"); //get msg from server
-				boolean hit = true;
-				
-				do
+
+				hand = new BlackJackHand();
+				// get the dealt cards (only two in the beginning)
+				for (int j=0; j<2; j++)
 				{
-					if (whoseTurn == turn)
+					//get the suit then value
+					int suit = in.readInt();
+					int value = in.readInt();
+					hand.addCard(new BlackJackCard(suit, value));
+				}
+				append(in.readUTF());//get the trial number
+				
+				for (int play = 0; play < MAXPLAYERS; play++)
+				{
+					
+					
+					append("\n\nWhose turn?\n"); 
+					whoseTurn = in.readInt();//get whose turn number
+		
+					//Server tell the client whose turn now
+					append("Server says: " + in.readUTF() + "\n");
+					
+					
+					append("Cards On Hand now: " + hand.getCardsOnHand() + "\n");
+					append("Values on hand now = " + hand.calculateValue() + "\n");
+					
+					
+					//if is my turn, i start hitting
+					boolean hit = true;
+					
+					do
 					{
-						sendAction();
-						append("Cards on hand now: " + in.readUTF() + "\n");
+						if (whoseTurn == turn)
+						{
+							sendAction();
+							String actionString = in.readUTF();
+							append("Player " + whoseTurn + " action: " + actionString + "\n");
+							
+							//get the suit then value of the card
+							if (actionString.compareTo("HIT") == 0)
+							{
+								int suit = in.readInt();
+								int value = in.readInt();
+								hand.addCard(new BlackJackCard(suit, value));
+								
+								//show the card out in client side
+								append("Cards on hand now: " + hand.getCardsOnHand() + "\n");
+								append("Values on hand now = " + hand.calculateValue() + "\n");
+							}
+						}
+						hit = in.readBoolean();
+					}while (hit);
+					
+					
+				}
+				//Read from server isGameEnd?
+				isGameEnd = in.readBoolean();
+				
+				//Read from server who's the winner
+				int winner = (in.readInt());
+				String winnerMsg = "";
+							
+				if (winner == DRAW)
+				{
+					winnerMsg = "This game is a draw";
+				}
+				else
+				{
+					if (winner == turn)
+					{
+						winnerMsg = "You Won!";
 					}
-					//else
-						//hit = false;
-					hit = in.readBoolean();
-					
-					append("Player " + whoseTurn + " action: " + in.readUTF() + "\n");
-					
-					//System.out.println(hit);
-				}while (hit);
+					else if (winner != turn)
+						winnerMsg = "You Lose!";
+				}
+				
+				winnerMsg += "\n";
+				
+				append(winnerMsg);
 			}
+			
 		} 
 		catch (IOException e) 
 		{
@@ -124,7 +157,7 @@ public class  Client extends JFrame implements Runnable, GameStatus
 	/***************************************************
 	 * PRIVATE METHODS
 	****************************************************/
-	//setup the frame for the server UI
+	//setup the frame for the client UI
 	private void setupFrame()
 	{
 		jtaLog = new JTextArea();
@@ -138,7 +171,7 @@ public class  Client extends JFrame implements Runnable, GameStatus
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(600,400);
-		setTitle("BlackJack Game - SADI (Client)");
+		setTitle("BlackJack Game - " + this.username);
 		setVisible(true);
 	}
 	
@@ -265,7 +298,6 @@ public class  Client extends JFrame implements Runnable, GameStatus
 		}
 		
 	}
-	
 	
 	/***************************************************
 	 * DEFAULT METHODS

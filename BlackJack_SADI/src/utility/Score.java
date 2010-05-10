@@ -3,7 +3,7 @@ package utility;
 public class Score 
 {
 	private int player; //special identification of player
-	private int points;
+	private int points; //count how many trials the player has won
 	
 	public Score(int player)
 	{
