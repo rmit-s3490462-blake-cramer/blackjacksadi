@@ -1,6 +1,6 @@
 package client;
 
-import utility.*;
+import utilityClient.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -30,14 +30,14 @@ public class  Client extends JFrame implements Runnable, GameStatus
 	
 	public Client()
 	{
-		username="test";
-		
+		username="Client";
 		setupFrame();
 		connectToServer();
 	}
 	
 	public void run()
 	{
+		
 		//get notification from the server to start the game
 		try
 		{
@@ -138,6 +138,8 @@ public class  Client extends JFrame implements Runnable, GameStatus
 			
 			append(in.readUTF());//get the scoreboard
 			
+			append("*****************Thank you for playing the Server-Client BlackJack Game******************************\n");
+			append("See you again! =)\n\n");
 		} 
 		catch (IOException e) 
 		{
@@ -165,6 +167,10 @@ public class  Client extends JFrame implements Runnable, GameStatus
 		setSize(600,400);
 		setTitle("BlackJack Game - " + this.username);
 		setVisible(true);
+		
+		append("*****************Welcome to the Server-Client BlackJack Game******************************\n");
+		append("Game created by: Wo Su Shyan, Yee Sean Cheng\n");
+		append("Please enjoy your stay with us =)\n\n");
 	}
 	
 	//Connect to server to be put in awaiting pool
